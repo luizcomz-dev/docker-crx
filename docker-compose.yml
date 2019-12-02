@@ -4,8 +4,8 @@ services:
         image: nginx
         volumes:
             - ./.docker/conf/nginx/default.conf:/etc/nginx/conf.d/default.conf
-            - ../apirx:/var/www/clinicarx.api
-            - ../app:/var/www/clinicarx.app
+            - ../apirx:/var/www/html/clinicarx.api
+            - ../app:/var/www/html/clinicarx.app
         ports:
             - 80:80
         restart: always
@@ -20,8 +20,8 @@ services:
         volumes:
             - ./.docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
             - ./.docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-            - ../apirx:/var/www/clinicarx.api
-            - ../app:/var/www/clinicarx.app
+            - ../apirx:/var/www/html/clinicarx.api
+            - ../app:/var/www/html/clinicarx.app
     postgres:
         image: postgres:9.6
         restart: always
@@ -30,7 +30,8 @@ services:
             - POSTGRES_USER=${DB_USER}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
         ports:
-            - 5432:5432
+            - 55432:5432
         volumes:
             - ./.docker/conf/postgres/:/docker-entrypoint-initdb.d/
             - ../db:/db
+            - ../apirx:/var/www/html/clinicarx.api

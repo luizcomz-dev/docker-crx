@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
         libpq-dev \
         libxpm-dev \
         libvpx-dev \
+        libldap2-dev \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && docker-php-ext-install -j$(nproc) mcrypt \
@@ -18,8 +19,15 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) pgsql \
     && docker-php-ext-install -j$(nproc) pdo_pgsql \
     && docker-php-ext-install -j$(nproc) exif \
+    && docker-php-ext-install -j$(nproc) ldap \
+    && docker-php-ext-install -j$(nproc) pcntl \ 
+    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
     && docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
         --with-xpm-dir=/usr/lib/x86_64-linux-gnu/ \
-        --with-vpx-dir=/usr/lib/x86_64-linux-gnu/ \
+        --with-vpx-dir=/usr/lib/x86_64-linux-gnu/ 
+        
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- \
+--install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer 
