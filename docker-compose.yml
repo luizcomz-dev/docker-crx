@@ -13,7 +13,7 @@ services:
             - php
             - postgres
     php:
-        build: .docker
+        build: .docker/conf/php
         restart: always
         environment: 
             - XDEBUG_CONFIG=remote_host=host.docker.internal
@@ -32,6 +32,6 @@ services:
         ports:
             - 55432:5432
         volumes:
-            - ./.docker/conf/postgres/:/docker-entrypoint-initdb.d/
-            - ../db:/db
+            - ../db/data:/var/lib/postgresql/data
+            - ../db/dump_clinicarx.sql:/docker-entrypoint-initdb.d/init.sql
             - ../apirx:/var/www/html/clinicarx.api
